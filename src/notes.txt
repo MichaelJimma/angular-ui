@@ -1,0 +1,5 @@
+3rd party libraries used in this app
+1. alertifyjs (https://alertifyjs.com/)
+2. angular2-jwt (https://github.com/auth0/angular2-jwt)
+3. ngx-bootstrap (https://valor-software.com/ngx-bootstrap/#/) // to avoid using bootstrap JS and jQuery
+5. bootswatch (https://bootswatch.com/) // free themes for bootstrap
