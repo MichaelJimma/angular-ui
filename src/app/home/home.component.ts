@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../_services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -9,9 +10,13 @@ export class HomeComponent implements OnInit {
   title = 'Welcome to PowerHub';
   registerMode = false;
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
 
   ngOnInit() {
+  }
+
+  loggedIn() {
+    return this.authService.loggedIn();
   }
 
   registerToggle() {

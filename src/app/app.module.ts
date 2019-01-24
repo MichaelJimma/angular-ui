@@ -4,7 +4,6 @@ import { HttpClientModule } from '@angular/common/http'; // used to send http re
 import { FormsModule} from '@angular/forms'; // ngForm directive
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
-import { Routes } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -12,24 +11,23 @@ import { TestComponent } from './test/test.component';
 import { NavComponent } from './nav/nav.component';
 import { AuthService } from './_services/auth.service';
 import { HomeComponent } from './home/home.component';
-import { RegisterComponent } from './register/register.component';
 import { AlertifyService } from './_services/alertify.service';
-import { TasksComponent } from './tasks/tasks.component';
+import { appRoutes } from './routes';
+import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './_guards/auth.guard';
+import { TaskService } from './_services/task.service';
+import { TaskListComponent } from './tasks/task-list/task-list.component';
+import { TaskCardComponent } from './tasks/task-card/task-card.component';
 
-const appRoutes: Routes = [
-   { path: 'home', component: HomeComponent },
-   { path: 'tasks', component: TasksComponent },
-   { path: 'test', component: TestComponent },
-   { path: '**', redirectTo: 'home', pathMatch: 'full' }
-];
 @NgModule({
    declarations: [
       AppComponent,
       TestComponent,
       NavComponent,
       HomeComponent,
-      RegisterComponent,
-      TasksComponent
+      LoginComponent,
+      TaskListComponent,
+      TaskCardComponent
    ],
    imports: [
       BrowserModule,
@@ -40,8 +38,10 @@ const appRoutes: Routes = [
       RouterModule.forRoot(appRoutes)
    ],
    providers: [
+      TaskService,
       AuthService,
-      AlertifyService
+      AlertifyService,
+      AuthGuard
    ],
    bootstrap: [
       AppComponent
