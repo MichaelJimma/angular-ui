@@ -1,0 +1,5 @@
+<!-- The sidebar -->
+<div class="sidebar" *ngIf="authService.loggedIn()">
+    <a class="nav-link" [routerLink]="['/overview']" routerLinkActive="active">Overview</a>
+    <a class="nav-link" [routerLink]="['/tasks']" routerLinkActive="active">Tasks</a>
+ </div>

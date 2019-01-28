@@ -1,28 +1,15 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark" *ngIf="authService.loggedIn()">
-    <div class="container">
-        <a class="navbar-brand" [routerLink]="['/home']" ><img src="..\assets\images\logo-white.png"></a>
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" [routerLink]="['/tasks']" >Tasks</a>
-          </li>
-          <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" [routerLink]="['/angular']" >Angular</a>
-          </li>
-          <li class="nav-item" routerLinkActive="active">
-            <a class="nav-link" [routerLink]="['/task']" >Task</a>
-          </li>
-        </ul>
-  
-        <div *ngIf="authService.loggedIn()" class="dropdown" dropdown>
-          <a class="dropdown-toggle text-light" dropdownToggle>
-            Welcome {{authService.decodedToken.company | titlecase}}
-          </a>
-        
-          <div class="dropdown-menu mt-3" *dropdownMenu>
-            <a class="dropdown-item" href="#"><i class="fa fa-cog"></i> Settings</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" (click)="logout()"><i class="fa fa-sign-out"></i> Logout</a>
-          </div>
-        </div>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" *ngIf="authService.loggedIn()">
+    <a class="navbar-brand" [routerLink]="['/home']" ><img src="..\assets\images\logo-white.png"></a>
+    <ul class="navbar-nav mr-auto">
+    </ul>
+
+    <div class="dropdown" dropdown>
+      <a class="dropdown-toggle text-light" dropdownToggle>
+        {{authService.decodedToken?.email}}
+      </a>
+    
+      <div class="dropdown-menu mt-3" *dropdownMenu>
+        <a class="dropdown-item" (click)="logout()"><i class="fa fa-sign-out"></i> Logout</a>
+      </div>
     </div>
   </nav>

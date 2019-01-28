@@ -1,0 +1,79 @@
+<div class="container">
+  <div class="row">
+      <div class="col-md-12">
+          <div class="card mt-5">
+              <div class="card-header">
+                {{(task?.name) ? task.name : 'Add new task'}}
+              </div>
+              <div class="card-body">
+                <h5 class="card-title"></h5>
+                <!-- Reactive Form -->
+                <form [formGroup]="taskForm"(ngSubmit)="save()">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text"
+                        [ngClass]="{'is-invalid': taskForm.get('name').errors && taskForm.get('name').touched}"
+                        class="form-control" id="name" formControlName="name" placeholder="name">
+                        <div class="invalid-feedback">Please enter a name.</div>
+                      </div>
+                      <div class="form-group">
+                        <label for="description">Description</label>
+                        <input type="description" 
+                        [ngClass]="{'is-invalid': taskForm.get('description').errors && taskForm.get('description').touched}"
+                        class="form-control" id="description" formControlName="description" placeholder="Description">
+                        <div class="invalid-feedback">Please enter a description less than 5 charcters.</div>
+                      </div>
+                      <div class="form-row">
+                          <div class="form-group col-md-6">
+                              <label for="startdate">Start Date</label>
+                              <input type="date" 
+                              [ngClass]="{'is-invalid': taskForm.get('startdate').errors && taskForm.get('startdate').touched ||
+                              taskForm.get('startdate').touched && taskForm.hasError('invalidDate')}"
+                              class="form-control" id="startdate" formControlName="startdate">
+                              <div class="invalid-feedback" 
+                              *ngIf="taskForm.get('startdate').hasError('required') && taskForm.get('startdate').touched">
+                                  Please enter a valid start date.</div>
+                              <div class="invalid-feedback" 
+                              *ngIf="taskForm.hasError('invalidDate') && taskForm.get('startdate').touched && !taskForm.get('startdate').hasError('required')">
+                                Start date should be less than or equal to end date.</div>
+                            </div>
+                            <div class="form-group col-md-6">
+                              <label for="enddate">End Date</label>
+                              <input type="date" 
+                              [ngClass]="{'is-invalid': taskForm.get('enddate').errors && taskForm.get('enddate').touched}"
+                              class="form-control" id="enddate" formControlName="enddate">
+                              <div class="invalid-feedback" 
+                              *ngIf="taskForm.get('enddate').hasError('required') && taskForm.get('enddate').touched">
+                                  Please enter a valid stendart date.</div>
+                              <div class="invalid-feedback" 
+                              *ngIf="taskForm.hasError('invalidDate') && taskForm.get('enddate').touched && !taskForm.get('enddate').hasError('required')">
+                                Start date should be less than or equal to end date.</div>
+                            </div>
+                      </div>
+                    <div class="form-row">
+                      <div class="form-group col-md-6">
+                        <label for="taskstatus">Status</label>
+                        <select id="taskstatus" class="form-control" formControlName="taskstatus">
+                            <option *ngFor="let item of taskStatus" value={{item.key}}> {{item.caption}} </option>
+                          </select>
+                      </div>
+                      <div class="form-group col-md-6">
+                        <label for="assignedto">Assigned To</label>
+                        <select id="assignedto" class="form-control" formControlName="assignedto">
+                            <option *ngFor="let user of users" value={{user.id}}> {{user.email}} </option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <button class="btn btn-success mr-2" [disabled]="!taskForm.valid || !taskForm.dirty" type="submit">{{(isCreate) ? 'Create' : 'Update'}}</button>
+                      <button class="btn btn-success" type="button" (click)="cancel()">Cancel</button>
+                    </div>
+                  </form>
+                <!-- <p>Form value: {{taskForm.value | json}}</p>
+                <p>Form status: {{taskForm.status | json}}</p>
+                <p>Form dirty: {{taskForm.dirty | json}}</p> -->
+              </div>
+            </div>
+      </div>
+  </div>
+</div>

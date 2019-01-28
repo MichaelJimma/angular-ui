@@ -1,38 +1,42 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from 'src/environments/environment';
+import { User } from '../_models/user';
+import { AlertifyService } from './alertify.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-baseUrl = environment.baseUrl + 'auth/';
+baseUrl = environment.authApi;
 jwtHelper = new JwtHelperService();
 decodedToken: any;
+httpOptions = {
+  headers: new HttpHeaders({
+    'Authorization': 'Bearer ' + localStorage.getItem('token')
+  })
+};
 
-constructor(private http: HttpClient) { }
+constructor(private http: HttpClient, private alertify: AlertifyService) { }
 
-  login(model: any) {
-    // return this.http.post(this.baseUrl + 'login', model).pipe(
-    //     map((response: any) => {
-    //     const user = response;
-    //     if (user) {
-    //       localStorage.setItem('token', user.token);
-    //     }
-    //   })
-    // );
-
-    // tslint:disable-next-line:max-line-length
-    const user = {token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ0b3B0YWwuY29tIiwiZXhwIjoxNDI2NDIwODAwLCJodHRwOi8vdG9wdGFsLmNvbS9qd3RfY2xhaW1zL2lzX2FkbWluIjp0cnVlLCJjb21wYW55IjoiVG9wdGFsIiwiYXdlc29tZSI6dHJ1ZX0.yRQYnWzskCZUxPwaQupWkiUzKELZ49eM7oWxAQK_ZXw'};
-    localStorage.setItem('token', user.token);
-    this.decodedToken = this.jwtHelper.decodeToken(user.token);
-    console.log(this.decodedToken);
+  login(model: User) {
+    return this.http.post(this.baseUrl + 'users/authenticate', model).pipe(
+        map((response: User) => { // mapping the response to User object
+        const user = response;
+        if (user) {
+          localStorage.setItem('token', user.token);
+          this.decodedToken = this.jwtHelper.decodeToken(user.token);
+         // console.log(this.jwtHelper.decodeToken(user.token));
+         console.log(user.token);
+        }
+      })
+    );
   }
 
-  register(model: any) {
-    this.http.post(this.baseUrl + 'register', model).subscribe(() => {
+  register(model: User) {
+    this.http.post(this.baseUrl + 'users/register', model).subscribe(() => {
       console.log('registration successful');
     }, error => {
       console.log(error);
@@ -40,8 +44,12 @@ constructor(private http: HttpClient) { }
   }
 
   loggedIn() {
-    const token = localStorage.getItem('token');
-    // return !this.jwtHelper.isTokenExpired(token);
-    return !!token;
+     const token = localStorage.getItem('token');
+     return !this.jwtHelper.isTokenExpired(token);
+    // return !!token;
+  }
+
+  getUsers() {
+    return this.http.get<User[]>(this.baseUrl + 'users', this.httpOptions);
   }
 }

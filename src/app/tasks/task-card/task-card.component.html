@@ -1,26 +1,37 @@
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-12">
-        <div class="card text-center">
-            <div class="card-header">
-              <ul class="nav nav-pills card-header-pills">
-                <li class="nav-item">
-                  <a class="nav-link active" href="#">Active</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </li>
-              </ul>
+<div class="card ml-5 mt-2">
+    <div class="mt-2">
+        <div class="col-3 float-left calendar-tile-wrapper">
+            <div class="calendar-tile">
+                <div class="month"
+                [ngClass]="{'task-overdue': task.isoverdue, 'task-complete': task.taskstatus === 'complete', 'task-closed': task.taskstatus === 'close',
+                                'task-new': task.taskstatus === 'new' || task.taskstatus === 'open'}">
+                    <h6>{{task.enddate | date:'MMM' | uppercase}}</h6>
+                </div>
+                <div class="day">{{task.enddate | date:'d'}}</div>
             </div>
-            <div class="card-body">
-              <h5 class="card-title">Special title treatment</h5>
-              <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
-          </div>
+        </div>
+        <div class="col-9 float-right">
+            <h5 class="float-left">{{task.name}}</h5>
+            <div class="btn-group float-right" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-link" [routerLink]="['/tasks/', task.id]"><span><i class="fa fa-edit"></i></span></button>
+                <button type="button" class="btn btn-link"><span><i class="fa fa-trash"></i></span></button>
+              </div>
+              <hr class="mt-5">
+        </div>
     </div>
-  </div>
-</div>>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-6">
+          <ul>
+              <li>Start Date: {{task.startdate | date:'d MMM yyyy' | uppercase}}</li>
+              <li>Assigned to: {{task.assignedto }}</li>
+          </ul>
+      </div>
+      <div class="col-6">
+          <ul>
+              <li>Status: {{task.taskstatus}}</li>
+              <li>Priority: {{task.taskpriority}}</li>
+          </ul>
+        </div>
+    </div>
+</div>
